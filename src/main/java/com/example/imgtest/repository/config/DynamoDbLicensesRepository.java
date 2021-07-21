@@ -42,7 +42,12 @@ public class DynamoDbLicensesRepository implements LicensesRepository {
 
     @Override
     public Mono<List<LicenseRecord>> getLicenses(UUID customerId, LicenseType type) {
+        final PageToRecordConverter converter = new PageToRecordConverter();
 
-        return null;
+        final Key key = Key.builder().partitionValue(customerId.toString()).sortValue(type.toString()).build();
+        customerLicenseGsi.query(QueryEnhancedRequest.builder().queryConditional(QueryConditional.keyEqualTo(key)).build())
+            .subscribe(converter);
+
+        return Mono.from(converter);
     }
 }

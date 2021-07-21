@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecon
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class LicenseRecord {
 
     public static final String CUSTOMER_LICENSE_GSI = "customerLicenseGsi";
