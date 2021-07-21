@@ -55,14 +55,21 @@ public class LicensesRepositoryIntegrationTest {
         // We have 3 licenses for the same customer (1 of type tournament, 2 of type match)
         UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
 
-        Mono<List<LicenseRecord>> licenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.MATCH);
+        Mono<List<LicenseRecord>> matchLicenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.MATCH);
+        Mono<List<LicenseRecord>> tournametLicenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.TOURNAMENT);
 
-        StepVerifier.create(licenses).expectNextMatches(list -> {
+        StepVerifier.create(matchLicenses).expectNextMatches(list -> {
             return list.size() == 2
                 && list.get(0).getType().equals(LicenseType.MATCH)
                 && list.get(1).getType().equals(LicenseType.MATCH)
                 && list.get(0).getCustomerId().equals(customerId)
                 && list.get(1).getCustomerId().equals(customerId);
+        }).verifyComplete();
+
+        StepVerifier.create(tournametLicenses).expectNextMatches(list -> {
+            return list.size() == 1
+                && list.get(0).getType().equals(LicenseType.TOURNAMENT)
+                && list.get(0).getCustomerId().equals(customerId);
         }).verifyComplete();
     }
 
