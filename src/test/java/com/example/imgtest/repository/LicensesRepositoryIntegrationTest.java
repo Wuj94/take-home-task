@@ -51,7 +51,7 @@ public class LicensesRepositoryIntegrationTest {
 
 
     @Test
-    public void get_match_licenses_for_a_customer_returns_match_licenses_only() {
+    public void get_licenses_for_customer_and_type_returns_licenses_of_that_type_only() {
         // We have 3 licenses for the same customer (1 of type tournament, 2 of type match)
         UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
 
@@ -71,6 +71,16 @@ public class LicensesRepositoryIntegrationTest {
                 && list.get(0).getType().equals(LicenseType.TOURNAMENT)
                 && list.get(0).getCustomerId().equals(customerId);
         }).verifyComplete();
+    }
+
+    @Test
+    public void get_licenses_for_nonexistent_customer_returns_empty_result() {
+        // We have 3 licenses for the same customer (1 of type tournament, 2 of type match)
+        UUID customerId = UUID.randomUUID();
+
+        Mono<List<LicenseRecord>> tournametLicenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.TOURNAMENT);
+
+        StepVerifier.create(tournametLicenses).expectNextMatches(list -> list.isEmpty()).verifyComplete();
     }
 
     @Test

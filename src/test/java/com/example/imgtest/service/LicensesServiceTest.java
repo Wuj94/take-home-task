@@ -1,11 +1,13 @@
 package com.example.imgtest.service;
 
-import static reactor.core.publisher.Mono.when;
+
+import static org.mockito.Mockito.when;
 
 
 import com.example.imgtest.repository.config.DynamoDbLicensesRepository;
 import com.example.imgtest.repository.config.LicenseRecord;
 import com.example.imgtest.repository.config.LicenseType;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Assert;
@@ -19,7 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import software.amazon.awssdk.enhanced.dynamodb.internal.client.DefaultDynamoDbAsyncIndex;
+import reactor.core.publisher.Mono;
 
 @RunWith(MockitoJUnitRunner.class)
 @ExtendWith(SpringExtension.class)
@@ -35,13 +37,16 @@ public class LicensesServiceTest {
     @MockBean
     private DynamoDbLicensesRepository dynamoDbLicensesRepository;
 
-    @MockBean
-    private DefaultDynamoDbAsyncIndex<LicenseRecord> customerLicenseGsi;
-
     @Test
     public void get_licenses_by_customer_and_type_returns_records_accordingly() {
-        UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
-        List<LicenseRecord> result = licensesService.getLicenses(customerId, LicenseType.TOURNAMENT).block();
+        final UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
+        final LicenseType licenseType = LicenseType.TOURNAMENT;
+
+        when(dynamoDbLicensesRepository.getLicenses(customerId, licenseType))
+            .thenReturn(Mono.just(List.of(new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.TOURNAMENT,
+                LocalDateTime.now(), "Joe", "Marc"))));
+
+        List<LicenseRecord> result = licensesService.getLicenses(customerId, licenseType).block();
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(customerId, result.get(0).getCustomerId());
@@ -49,11 +54,13 @@ public class LicensesServiceTest {
     }
 
     @Test
-    public void get_licenses_by_invalid_customer_id_throws_bad_parameter_exception() {
+    public void get_licenses_by_nonexistent_customer_id_returns_empty_result() {
         UUID customerId = UUID.randomUUID();
-        //mock gsi here
 
-        Assert.assertThrows(BadParameterException.class,
-            () -> licensesService.getLicenses(customerId, LicenseType.MATCH).block());
+        when(dynamoDbLicensesRepository.getLicenses(customerId, LicenseType.MATCH))
+            .thenReturn(Mono.just(List.of()));
+        List<LicenseRecord> licenses = licensesService.getLicenses(customerId, LicenseType.MATCH).block();
+
+        Assert.assertTrue(licenses.isEmpty());
     }
 }
