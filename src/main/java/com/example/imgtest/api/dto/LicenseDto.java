@@ -1,7 +1,9 @@
 package com.example.imgtest.api.dto;
 
 import com.example.imgtest.repository.config.LicenseRecord;
+import com.example.imgtest.repository.config.Summary;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -23,12 +25,22 @@ public class LicenseDto {
     @NonNull
     private String playerB;
 
-//    private String summary;
+    private String summary;
 
     public static LicenseDto from(LicenseRecord licenseRecord) {
         return new LicenseDto(licenseRecord.getLicenseId(),
             licenseRecord.getStartDate(),
             licenseRecord.getPlayerA(),
-            licenseRecord.getPlayerB());
+            licenseRecord.getPlayerB(),
+            generateSummary(licenseRecord)
+        );
+    }
+
+    public static String generateSummary(LicenseRecord licenseRecord) {
+        return licenseRecord.getSummary() == null
+               ? "" : licenseRecord.getSummary().equals(Summary.AvB)
+                        ? licenseRecord.getPlayerA() + " vs " +  licenseRecord.getPlayerB()
+                        : licenseRecord.getPlayerA() + " vs " +  licenseRecord.getPlayerB()
+                        + " started " + Duration.between(LocalDateTime.now(), licenseRecord.getStartDate()).toMinutes() + " minutes ago.";
     }
 }

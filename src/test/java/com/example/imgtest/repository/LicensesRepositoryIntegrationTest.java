@@ -79,7 +79,7 @@ public class LicensesRepositoryIntegrationTest {
     @Test
     public void get_licenses_for_nonexistent_customer_returns_empty_result() {
         // We have 3 licenses for the same customer (1 of type tournament, 2 of type match)
-        final UUID customerId = CUSTOMER_ID;
+        final UUID customerId = UUID.randomUUID();
 
         Mono<List<LicenseRecord>> tournametLicenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.TOURNAMENT);
 

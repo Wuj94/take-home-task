@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.example.imgtest.repository.config.DynamoDbLicensesRepository;
 import com.example.imgtest.repository.config.LicenseRecord;
 import com.example.imgtest.repository.config.LicenseType;
+import com.example.imgtest.repository.config.Summary;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class LicensesServiceTest {
 
         when(dynamoDbLicensesRepository.getLicenses(customerId, licenseType))
             .thenReturn(Mono.just(List.of(new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.TOURNAMENT,
-                LocalDateTime.now(), "Joe", "Marc"))));
+                LocalDateTime.now(), "Joe", "Marc", Summary.AvB))));
 
         List<LicenseRecord> result = licensesService.getLicenses(customerId, licenseType).block();
 

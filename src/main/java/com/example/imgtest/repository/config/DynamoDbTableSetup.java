@@ -41,9 +41,9 @@ public class DynamoDbTableSetup {
             }
 
             //Loading test dataset
-            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.MATCH, LocalDateTime.now(), "Joe", "Marc")).get();
-            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.MATCH, LocalDateTime.now(), "Marc", "Joe")).get();
-            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.TOURNAMENT, LocalDateTime.now(), "Joe", "Marc")).get();
+            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.MATCH, LocalDateTime.now(), "Joe", "Marc", Summary.AvB)).get();
+            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.MATCH, LocalDateTime.now(), "Marc", "Joe", Summary.AvBTime)).get();
+            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.TOURNAMENT, LocalDateTime.now(), "Joe", "Marc", Summary.AvB)).get();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

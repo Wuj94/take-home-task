@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.example.imgtest.repository.config.DynamoDbTableSetup;
 import com.example.imgtest.repository.config.LicenseRecord;
 import com.example.imgtest.repository.config.LicenseType;
+import com.example.imgtest.repository.config.Summary;
 import com.example.imgtest.service.LicensesService;
 import com.example.imgtest.api.ApiRouterConfiguration;
 import java.time.LocalDateTime;
@@ -39,8 +40,8 @@ public class HandlerTest {
         final UUID customerId = CUSTOMER_ID;
         final LicenseType type = LicenseType.MATCH;
         final List<LicenseRecord> list = List.of(
-            new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.MATCH, LocalDateTime.now(), "Joe", "Marc"),
-            new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.MATCH, LocalDateTime.now(), "Marc", "Joe"));
+            new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.MATCH, LocalDateTime.now(), "Joe", "Marc", Summary.AvB),
+            new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.MATCH, LocalDateTime.now(), "Marc", "Joe", Summary.AvBTime));
 
         when(service.getLicenses(customerId, type)).thenReturn(Mono.just(list));
 
@@ -55,10 +56,12 @@ public class HandlerTest {
             .jsonPath("$.licenses.[0].playerA").value(equalTo("Joe"))
             .jsonPath("$.licenses.[0].playerB").value(equalTo("Marc"))
             .jsonPath("$.licenses.[0].startDate").exists()
+            .jsonPath("$.licenses.[0].summary").exists()
             .jsonPath("$.licenses.[1].matchId").exists()
             .jsonPath("$.licenses.[1].playerA").value(equalTo("Marc"))
             .jsonPath("$.licenses.[1].playerB").value(equalTo("Joe"))
             .jsonPath("$.licenses.[1].startDate").exists()
+            .jsonPath("$.licenses.[1].summary").exists()
             .jsonPath("$.licenses.[0].id").doesNotExist();
     }
 

@@ -38,4 +38,6 @@ public class LicenseRecord {
 
     private String playerB;
 
+    private Summary summary;
+
 }
