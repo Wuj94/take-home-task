@@ -1,5 +1,8 @@
 package com.example.imgtest.repository;
 
+import static com.example.imgtest.repository.config.DynamoDbTableSetup.CUSTOMER_ID;
+
+
 import com.example.imgtest.TestingSpringContext;
 import com.example.imgtest.repository.config.DynamoDbConfig;
 import com.example.imgtest.repository.config.DynamoDbLicensesRepository;
@@ -53,7 +56,7 @@ public class LicensesRepositoryIntegrationTest {
     @Test
     public void get_licenses_for_customer_and_type_returns_licenses_of_that_type_only() {
         // We have 3 licenses for the same customer (1 of type tournament, 2 of type match)
-        UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
+        final UUID customerId = CUSTOMER_ID;
 
         Mono<List<LicenseRecord>> matchLicenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.MATCH);
         Mono<List<LicenseRecord>> tournametLicenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.TOURNAMENT);
@@ -76,7 +79,7 @@ public class LicensesRepositoryIntegrationTest {
     @Test
     public void get_licenses_for_nonexistent_customer_returns_empty_result() {
         // We have 3 licenses for the same customer (1 of type tournament, 2 of type match)
-        UUID customerId = UUID.randomUUID();
+        final UUID customerId = CUSTOMER_ID;
 
         Mono<List<LicenseRecord>> tournametLicenses = dynamoDbPlayerRepository.getLicenses(customerId, LicenseType.TOURNAMENT);
 

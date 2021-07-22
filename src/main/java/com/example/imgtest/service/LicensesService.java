@@ -20,7 +20,7 @@ public class LicensesService {
         this.licensesRepository = licensesRepository;
     }
 
-    Mono<List<LicenseRecord>> getLicenses(UUID customerId, LicenseType type) {
+    public Mono<List<LicenseRecord>> getLicenses(UUID customerId, LicenseType type) {
         return licensesRepository.getLicenses(customerId, type);
     }
 

@@ -1,10 +1,12 @@
 package com.example.imgtest.api.handler;
 
+import static com.example.imgtest.repository.config.DynamoDbTableSetup.CUSTOMER_ID;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 
+import com.example.imgtest.repository.config.DynamoDbTableSetup;
 import com.example.imgtest.repository.config.LicenseRecord;
 import com.example.imgtest.repository.config.LicenseType;
 import com.example.imgtest.service.LicensesService;
@@ -34,7 +36,7 @@ public class HandlerTest {
 
     @Test
     public void get_licenses_by_customer_id_and_type_returns_list_of_players() {
-        final UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
+        final UUID customerId = CUSTOMER_ID;
         final LicenseType type = LicenseType.MATCH;
         final List<LicenseRecord> list = List.of(
             new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.MATCH, LocalDateTime.now(), "Joe", "Marc"),
@@ -62,7 +64,7 @@ public class HandlerTest {
 
     @Test
     public void search_players_is_bad_request_for_wrong_type_parameters() {
-        final UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
+        final UUID customerId = CUSTOMER_ID;
 
         client.get()
             .uri(ApiRouterConfiguration.LICENSES_BASE_RESOURCE + String.format("?%s=%s", Handler.TYPE_QUERY_PARAM, "matchctam"), customerId)
@@ -73,7 +75,7 @@ public class HandlerTest {
 
     @Test
     public void search_players_is_bad_request_for_missing_type_parameters() {
-        final UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
+        final UUID customerId = CUSTOMER_ID;
 
         client.get()
             .uri(ApiRouterConfiguration.LICENSES_BASE_RESOURCE + String.format("?%s=%s", Handler.TYPE_QUERY_PARAM, "matchctam"), customerId)

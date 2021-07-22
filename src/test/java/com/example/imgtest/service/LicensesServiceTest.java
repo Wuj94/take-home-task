@@ -1,6 +1,7 @@
 package com.example.imgtest.service;
 
 
+import static com.example.imgtest.repository.config.DynamoDbTableSetup.CUSTOMER_ID;
 import static org.mockito.Mockito.when;
 
 
@@ -39,7 +40,7 @@ public class LicensesServiceTest {
 
     @Test
     public void get_licenses_by_customer_and_type_returns_records_accordingly() {
-        final UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
+        final UUID customerId = CUSTOMER_ID;
         final LicenseType licenseType = LicenseType.TOURNAMENT;
 
         when(dynamoDbLicensesRepository.getLicenses(customerId, licenseType))
@@ -55,7 +56,7 @@ public class LicensesServiceTest {
 
     @Test
     public void get_licenses_by_nonexistent_customer_id_returns_empty_result() {
-        UUID customerId = UUID.randomUUID();
+        final UUID customerId = UUID.randomUUID();
 
         when(dynamoDbLicensesRepository.getLicenses(customerId, LicenseType.MATCH))
             .thenReturn(Mono.just(List.of()));
