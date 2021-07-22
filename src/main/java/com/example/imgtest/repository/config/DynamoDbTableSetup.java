@@ -20,6 +20,7 @@ public class DynamoDbTableSetup {
     private final DynamoDbAsyncClient client;
     private final DynamoDbEnhancedAsyncClient enhancedClient;
     private final String tableName;
+    public static final UUID CUSTOMER_ID = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
 
     public DynamoDbTableSetup(DynamoDbAsyncClient client,
                               DynamoDbEnhancedAsyncClient enhancedClient,
@@ -40,10 +41,9 @@ public class DynamoDbTableSetup {
             }
 
             //Loading test dataset
-            UUID customerId = UUID.fromString("6b32508e-6ba5-44d4-82dc-4742caad7cf8");
-            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.MATCH, LocalDateTime.now(), "Joe", "Marc")).get();
-            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.MATCH, LocalDateTime.now(), "Marc", "Joe")).get();
-            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), customerId, LicenseType.TOURNAMENT, LocalDateTime.now(), "Joe", "Marc")).get();
+            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.MATCH, LocalDateTime.now(), "Joe", "Marc")).get();
+            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.MATCH, LocalDateTime.now(), "Marc", "Joe")).get();
+            dynamoTable.putItem(new LicenseRecord(UUID.randomUUID(), CUSTOMER_ID, LicenseType.TOURNAMENT, LocalDateTime.now(), "Joe", "Marc")).get();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
