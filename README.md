@@ -1,13 +1,13 @@
-#IMG Arena Interview
+# IMG Arena Interview
 
-##Resources
+## Resources
 
 tournaments
 tournaments/${tournamentId}/matches
 customers
 customers/${customerId}/licenses
 
-#Access Pattern
+# Access Pattern
 
 We want to retrieve all of the matches a customer has licensed
 
@@ -18,7 +18,7 @@ or **400** *BAD REQUEST* if any of type or customerId is not valid
 
 or **404** *NOT FOUND* if the customer is not found.
 
-###Representation of the response: 
+### Representation of the response: 
 JSON array where top-level attributes of the elements in the array are:
 - matchId
 - startDate 
@@ -27,7 +27,7 @@ JSON array where top-level attributes of the elements in the array are:
 - summary
 
 
-#Database Design 
+# Database Design 
 
 DynamoDB (key-value NoSQL datastore) is used as DB technology,
 
