@@ -1,13 +1,29 @@
-# IMG Arena Interview
+This is an exercise I've been asked to solve for an interview. 
 
-## Resources
+# Take home task
 
-- tournaments
+Create a Restful microservice to display details of licenses tennis matches for a customer.
+
+A **customer** may **license** either an individual **match** or a whole tournament. Every match is part of a tournament. The service should support multiple customers with different license agreements.
+
+The service should return the following as JSON:
+
+- matchId: Unique ID
+- startDate: Date and time the match is scheduled to start
+- playerA: Name of player A
+- playerB: Name of player B
+- summary: An optional parameter called summaryType can be set to any of:
+    - AvB: in which case returns string "<playerA> vs <playerB>"
+    - AvBTime: in which case use the start time to return the string "<playerA> vs <playerB>, starts in X minutes" when the start time is in the future. And, "<playerA> vs <playerB>, started X minutes ago", when the start time is in the past.
+
+  
+# Solution
+
+## Resource endpoints
 - tournaments/${tournamentId}/matches
-- customers
 - customers/${customerId}/licenses
 
-# Access Pattern
+## Access Pattern
 
 We want to retrieve all of the matches a customer has licensed
 
@@ -18,16 +34,8 @@ We want to retrieve all of the matches a customer has licensed
 - **400** *BAD REQUEST* if any of type or customerId is not valid or
 - **404** *NOT FOUND* if the customer is not found.
 
-### Representation of the response: 
-JSON array where top-level attributes of the elements in the array are:
-- matchId
-- startDate 
-- playerA 
-- playerB 
-- summary
 
-
-# Database Design 
+## Database Design 
 
 DynamoDB (key-value NoSQL datastore) is used as DB technology,
 
