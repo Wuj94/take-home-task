@@ -1,4 +1,4 @@
-This is an exercise I've been asked to solve for an interview. 
+This is an exercise I was asked to solve for an interview. 
 
 # Take home task
 
